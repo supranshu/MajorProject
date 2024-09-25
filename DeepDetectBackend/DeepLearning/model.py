@@ -1,79 +1,105 @@
-# deeplearning/model.py
-
 import os
 import pandas as pd
-import tensorflow as tf
-from tensorflow.keras import layers, models
-from tensorflow.keras.applications import MobileNetV2
+import numpy as np
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.applications import VGG16
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Flatten, Dropout
+from tensorflow.keras.optimizers import Adam
 
-AUTOTUNE = tf.data.AUTOTUNE
+# Set dataset paths
+train_csv_path = './Dataset/train.csv'
+valid_csv_path = './Dataset/valid.csv'
+train_directory = './Dataset/rvf10k/'
+valid_directory = './Dataset/rvf10k/'
 
-# Function to load images and preprocess
-def load_image(image_path):
-    image = tf.io.read_file(image_path)
-    image = tf.image.decode_jpeg(image, channels=3)
-    image = tf.image.resize(image, [224, 224])
-    image = image / 255.0
-    return image
+# Load the CSV files
+train_df = pd.read_csv(train_csv_path)
+valid_df = pd.read_csv(valid_csv_path)
 
-# Function to parse data from CSV
-def parse_data(row, root_dir):
-    image_path = os.path.join(root_dir, row['path'])
-    label = tf.convert_to_tensor(row['label'], dtype=tf.int32)
-    image = load_image(image_path)
-    return image, label
+# Convert integer labels to strings for binary classification
+train_df['label'] = train_df['label'].apply(lambda x: 'real' if x == 1 else 'fake')
+valid_df['label'] = valid_df['label'].apply(lambda x: 'real' if x == 1 else 'fake')
 
-# Function to load dataset
-def load_dataset(csv_file, root_dir, batch_size=32, shuffle=True):
-    df = pd.read_csv(csv_file)
-    dataset = tf.data.Dataset.from_tensor_slices(dict(df))
-    dataset = dataset.map(lambda row: parse_data(row, root_dir), num_parallel_calls=AUTOTUNE)
-    
-    if shuffle:
-        dataset = dataset.shuffle(buffer_size=len(df))
-    
-    dataset = dataset.batch(batch_size).prefetch(buffer_size=AUTOTUNE)
-    
-    return dataset
+# Update the path column to be the full path of the images
+# Remove any extra 'train/' or 'valid/' prefix in the path
+train_df['path'] = train_df['path'].apply(lambda x: os.path.join(train_directory, x))
+valid_df['path'] = valid_df['path'].apply(lambda x: os.path.join(valid_directory, x))
 
-# Load the train and validation datasets
-train_dataset = load_dataset('../Dataset/train.csv', '../Dataset/rvf10k/train')
-valid_dataset = load_dataset('../Dataset/valid.csv', '../Dataset/rvf10k/valid')
+# Print constructed paths for debugging
+print("Train DataFrame Paths:")
+print(train_df['path'].head())
 
+print("Validation DataFrame Paths:")
+print(valid_df['path'].head())
 
-# Function to create the deepfake detection model
-def create_model(input_shape=(224, 224, 3)):
-    base_model = MobileNetV2(weights='imagenet', include_top=False, input_shape=input_shape)
-    base_model.trainable = False  # Freeze the base model
+# Filter out any rows where the image path does not exist
+train_df = train_df[train_df['path'].apply(os.path.exists)]
+valid_df = valid_df[valid_df['path'].apply(os.path.exists)]
 
-    # Custom layers on top of MobileNetV2
-    model = models.Sequential([
-        base_model,
-        layers.GlobalAveragePooling2D(),
-        layers.Dense(128, activation='relu'),
-        layers.Dropout(0.5),
-        layers.Dense(1, activation='sigmoid')  # Binary classification (real/fake)
-    ])
+# Print the filtered DataFrame lengths
+print(f"Filtered Training DataFrame Length: {len(train_df)}")
+print(f"Filtered Validation DataFrame Length: {len(valid_df)}")
 
-    # Compile the model
-    model.compile(optimizer='adam',
-                  loss='binary_crossentropy',
-                  metrics=['accuracy'])
+# Check for unique labels
+print("Unique labels in training data:", train_df['label'].unique())
+print("Unique labels in validation data:", valid_df['label'].unique())
 
-    return model
-
-# Create the model
-model = create_model()
-
-# Display model architecture
-model.summary()
-
-# Train the model
-history = model.fit(
-    train_dataset,
-    epochs=10,
-    validation_data=valid_dataset
+# Image Data Generators for Data Augmentation
+train_datagen = ImageDataGenerator(
+    rescale=1./255,
+    rotation_range=20,
+    width_shift_range=0.2,
+    height_shift_range=0.2,
+    shear_range=0.2,
+    zoom_range=0.2,
+    horizontal_flip=True,
+    fill_mode='nearest'
 )
 
-# Save the trained model
-model.save('deeplearning/deepfake_model.h5')
+valid_datagen = ImageDataGenerator(rescale=1./255)
+
+# Create Data Generators
+train_generator = train_datagen.flow_from_dataframe(
+    dataframe=train_df,
+    directory=None,  # Set to None because paths are absolute
+    x_col="path",
+    y_col="label",
+    target_size=(224, 224),
+    batch_size=32,
+    class_mode='binary'
+)
+
+valid_generator = valid_datagen.flow_from_dataframe(
+    dataframe=valid_df,
+    directory=None,  # Set to None because paths are absolute
+    x_col="path",
+    y_col="label",
+    target_size=(224, 224),
+    batch_size=32,
+    class_mode='binary'
+)
+
+# Build the VGG16 model
+base_model = VGG16(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
+model = Sequential()
+model.add(base_model)
+model.add(Flatten())
+model.add(Dense(256, activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(1, activation='sigmoid'))  # Binary classification
+
+# Compile the model
+model.compile(optimizer=Adam(), loss='binary_crossentropy', metrics=['accuracy'])
+
+# Train the model
+model.fit(
+    train_generator,
+    steps_per_epoch=len(train_generator),
+    validation_data=valid_generator,
+    validation_steps=len(valid_generator),
+    epochs=10  # Adjust the number of epochs as needed
+)
+
+# Save the model
+model.save('deepfake_detector_model.h5')
