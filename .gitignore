@@ -1,1 +1,4 @@
 DeepDetectBackend/Dataset/
+
+# Create an exception for .gitkeep files (this will keep an empty folder)
+!Dataset/.gitkeep
