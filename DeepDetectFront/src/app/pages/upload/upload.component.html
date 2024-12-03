@@ -8,7 +8,8 @@
     </div>
   
     <div *ngIf="responseMessage" class="response-message">
-      <p>{{ responseMessage }}</p>
+      <p [innerHTML]="responseMessage"></p>
     </div>
+    
   </div>
   

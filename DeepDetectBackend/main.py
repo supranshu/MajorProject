@@ -1,4 +1,5 @@
 from fastapi import FastAPI, File, UploadFile
+from fastapi.exceptions import HTTPException
 import uvicorn
 from tensorflow.keras.models import load_model
 import numpy as np
@@ -8,18 +9,34 @@ import io
 import os
 
 app = FastAPI()
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Load the pre-trained model once when the application starts
-MODEL_PATH = "DeepDetectBackend/TrainedModel/best_model.h5"
-model = load_model('./TrainedModel/best_model.h5')
+MODEL_PATH = "./TrainedModel/best_model.h5"
+model = load_model(MODEL_PATH)
 
 # Helper function: Preprocess image
 def preprocess_image(image_bytes):
-    image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
-    image = image.resize((224, 224))  # Resize to match the input size of your model
-    image_array = np.array(image) / 255.0  # Normalize pixel values
-    image_array = np.expand_dims(image_array, axis=0)  # Add batch dimension
+    try:
+        # Attempt to open the image
+        image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+    except Exception as e:
+        raise ValueError(f"Failed to process image. Error: {e}")
+
+    # Resize and preprocess
+    image = image.resize((224, 224))
+    image_array = np.array(image) / 255.0
+    image_array = np.expand_dims(image_array, axis=0)
     return image_array
+
 
 # Helper function: Process video and predict for each frame
 def process_video(video_path):
@@ -55,6 +72,7 @@ def process_video(video_path):
 def read_root():
     return {"message": "Welcome to DeepDetect API"}
 
+
 @app.post("/upload-image/")
 async def upload_image(file: UploadFile = File(...)):
     # Read image bytes
@@ -65,13 +83,17 @@ async def upload_image(file: UploadFile = File(...)):
 
     # Predict using the model
     prediction = model.predict(processed_image)
-    is_fake = prediction[0][0] > 0.5  # Adjust threshold based on model
+    is_fake = prediction[0][0] > 0.5 # Adjust threshold based on model
+
+    print(f"Prediction output: {prediction}")
+
 
     return {
         "filename": file.filename,
-        "is_fake": is_fake,
-        "confidence": float(prediction[0][0]),
+        "is_fake": bool(is_fake),  # Convert numpy.bool to native bool
+        "confidence": float(prediction[0][0]),  # Convert to float for JSON serialization
     }
+
 
 @app.post("/upload-video/")
 async def upload_video(file: UploadFile = File(...)):
