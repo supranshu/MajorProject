@@ -1,1 +1,14 @@
-<p>upload works!</p>
+<div class="upload-container">
+    <h2>Upload Media</h2>
+    <p>Choose an image or video file to detect deepfake content.</p>
+  
+    <div class="upload-section">
+      <input type="file" (change)="onFileSelected($event)" />
+      <button (click)="uploadFile()">Upload</button>
+    </div>
+  
+    <div *ngIf="responseMessage" class="response-message">
+      <p>{{ responseMessage }}</p>
+    </div>
+  </div>
+  

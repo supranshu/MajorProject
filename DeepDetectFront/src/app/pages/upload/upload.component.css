@@ -1,0 +1,14 @@
+.upload-container {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .upload-section {
+    margin: 20px 0;
+  }
+  
+  .response-message {
+    color: green;
+    font-weight: bold;
+  }
+  

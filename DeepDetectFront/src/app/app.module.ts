@@ -9,6 +9,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './pages/home/home.component';
 import { UploadComponent } from './pages/upload/upload.component';
+import { HttpClientModule } from '@angular/common/http';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -17,7 +19,7 @@ import { UploadComponent } from './pages/upload/upload.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule, FormsModule,  BrowserAnimationsModule, ReactiveFormsModule
+    AppRoutingModule, FormsModule,  BrowserAnimationsModule, ReactiveFormsModule, HttpClientModule 
   ],
   providers: [
     provideClientHydration(), provideAnimationsAsync()
