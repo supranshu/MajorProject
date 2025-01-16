@@ -20,7 +20,7 @@ app.add_middleware(
 )
 
 # Load the pre-trained model once when the application starts
-MODEL_PATH = "./TrainedModel/best_model.h5"
+MODEL_PATH = "./TrainedModel/best_model_new.keras"
 model = load_model(MODEL_PATH)
 
 # Helper function: Preprocess image
@@ -65,7 +65,7 @@ def process_video(video_path):
 
     # Analyze predictions
     average_prediction = np.mean(frame_results, axis=0)
-    is_fake = average_prediction[0] > 0.5  # Adjust threshold based on model
+    is_fake = average_prediction[0] > 0.2  # Adjust threshold based on model
     return {"is_fake": is_fake, "confidence": float(average_prediction[0]), "total_frames": frame_count}
 
 @app.get("/")
@@ -83,7 +83,7 @@ async def upload_image(file: UploadFile = File(...)):
 
     # Predict using the model
     prediction = model.predict(processed_image)
-    is_fake = prediction[0][0] > 0.5 # Adjust threshold based on model
+    is_fake = prediction[0][0] > 0.2 # Adjust threshold based on model
 
     print(f"Prediction output: {prediction}")
 
