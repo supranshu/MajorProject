@@ -58,16 +58,14 @@ def process_video(video_path):
 
         # Predict using the model
         prediction = model.predict(frame_array)
-        
-        # If any frame is detected as deepfake, return immediately
-        if prediction[0][0] > 0.2:
+
+        # If ANY value in prediction is greater than 0.2, return deepfake
+        if np.any(prediction > 0.5):
             cap.release()
-            return {"is_fake": True, "confidence": float(prediction[0][0]), "total_frames": frame_count}
+            return {"is_fake": True, "confidence": float(np.max(prediction)), "total_frames": frame_count}
 
     cap.release()
-
     return {"is_fake": False, "confidence": 0.0, "total_frames": frame_count}
-
 
 
 @app.get("/")

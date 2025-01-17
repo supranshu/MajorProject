@@ -1,52 +1,54 @@
-<!-- upload-media.component.html -->
+<!-- upload.component.html -->
 <div class="upload-container">
-  <div class="background-video">
-    <video autoplay muted loop>
-      <source src="assets/videos/background.mp4" type="video/mp4">
-    </video>
-  </div>
+  <!-- GIF Background -->
+  <div class="background-gif"></div>
+  
+  <div class="overlay"></div>
   
   <div class="upload-card" [@fadeInOut]>
-    <h1 class="title">Upload Media</h1>
-    <p class="subtitle">Choose an image or video file to detect deepfake content.</p>
+    <h1>Upload Media</h1>
+    <p>Choose an image or video file to detect deepfake content.</p>
     
     <div class="upload-area" 
-         (dragover)="onDragOver($event)" 
+         [class.dragging]="isDragging"
+         (dragover)="onDragOver($event)"
          (dragleave)="onDragLeave($event)"
          (drop)="onDrop($event)">
       
-      <div class="file-input-wrapper">
-        <input type="file" 
-               #fileInput
-               (change)="onFileSelected($event)" 
-               accept="image/*,video/*" 
-               class="file-input">
-        
+      <input #fileInput
+             type="file"
+             (change)="onFileSelected($event)"
+             accept="image/*,video/*"
+             class="file-input"
+             hidden>
+      
+      <div class="upload-content">
         <div class="upload-icon">
           <i class="fas fa-cloud-upload-alt"></i>
         </div>
         
-        <div class="upload-text">
-          <ng-container *ngIf="!selectedFile">
-            <p>Drag and drop files here</p>
-            <p>OR</p>
-            <button class="browse-btn" (click)="fileInput.click()">Browse Files</button>
-          </ng-container>
-          
-          <ng-container *ngIf="selectedFile">
-            <p class="file-name">{{ selectedFile.name }}</p>
-            <button class="change-btn" (click)="fileInput.click()">Change File</button>
-          </ng-container>
-        </div>
+        <ng-container *ngIf="!selectedFile">
+          <p>Drag and drop files here</p>
+          <p>OR</p>
+          <button class="browse-btn" (click)="fileInput.click()">Browse Files</button>
+        </ng-container>
+        
+        <ng-container *ngIf="selectedFile">
+          <p class="file-name">{{ selectedFile.name }}</p>
+          <p class="file-size">Size: {{ getFileSize() }}</p>
+          <button class="change-btn" (click)="clearFile()">Change File</button>
+        </ng-container>
       </div>
     </div>
     
     <button class="upload-btn" 
-            [disabled]="!selectedFile" 
+            [disabled]="!selectedFile || uploading"
             (click)="uploadFile()"
             [@pulseAnimation]="selectedFile ? 'active' : 'inactive'">
-      <span>Upload</span>
-      <div class="loading-spinner" *ngIf="uploading"></div>
+      <span>{{ uploading ? 'Uploading...' : 'Upload' }}</span>
+      <div class="spinner" *ngIf="uploading"></div>
     </button>
+    
+    <div class="response-message" *ngIf="responseMessage" [innerHTML]="responseMessage"></div>
   </div>
 </div>
