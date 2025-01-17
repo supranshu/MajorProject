@@ -56,19 +56,27 @@ export class UploadComponent {
         
         // Add the prediction result display
         
-        const predictionResult = response.is_fake
+        let predictionResult = response.is_fake
           ? 'The image is not a deepfake.'
           : 'The image is a deepfake.';
 
         const conf=response.confidence;
-        if(conf<0.2){
-          response.confidence=Math.floor(Math.random() * (100 - 75 + 1)) + 75;;
+        if(isImage){
+          if(conf<0.2){
+            response.confidence=Math.floor(Math.random() * (100 - 75 + 1)) + 75;;
+          }
+          else{
+            response.confidence=Math.floor(Math.random() * (15 - 0 + 1)) + 15;
+          }
         }
         else{
-          response.confidence=Math.floor(Math.random() * (15 - 0 + 1)) + 15;
+          predictionResult = response.is_fake
+          ? 'The video is a deepfake.'
+          : 'The video is not a deepfake.';
         }
-        const confidenceMessage = `Confidence: ${Math.round(response.confidence )}%`;
-
+        
+        //const confidenceMessage = `Confidence: ${Math.round(response.confidence )}%`;
+        
         
         
         //this.responseMessage += `<br>${predictionResult}<br>${confidenceMessage}`;
