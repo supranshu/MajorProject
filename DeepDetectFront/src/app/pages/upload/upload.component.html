@@ -1,115 +1,52 @@
-<div class="main-container">
-  <div class="upload-container">
-      <h2>Upload Media</h2>
-      <p>Choose an image or video file to detect deepfake content.</p>
+<!-- upload-media.component.html -->
+<div class="upload-container">
+  <div class="background-video">
+    <video autoplay muted loop>
+      <source src="assets/videos/background.mp4" type="video/mp4">
+    </video>
+  </div>
+  
+  <div class="upload-card" [@fadeInOut]>
+    <h1 class="title">Upload Media</h1>
+    <p class="subtitle">Choose an image or video file to detect deepfake content.</p>
     
-      <div class="upload-section">
-        <input type="file" (change)="onFileSelected($event)" />
-        <button (click)="uploadFile()">Upload</button>
+    <div class="upload-area" 
+         (dragover)="onDragOver($event)" 
+         (dragleave)="onDragLeave($event)"
+         (drop)="onDrop($event)">
+      
+      <div class="file-input-wrapper">
+        <input type="file" 
+               #fileInput
+               (change)="onFileSelected($event)" 
+               accept="image/*,video/*" 
+               class="file-input">
+        
+        <div class="upload-icon">
+          <i class="fas fa-cloud-upload-alt"></i>
+        </div>
+        
+        <div class="upload-text">
+          <ng-container *ngIf="!selectedFile">
+            <p>Drag and drop files here</p>
+            <p>OR</p>
+            <button class="browse-btn" (click)="fileInput.click()">Browse Files</button>
+          </ng-container>
+          
+          <ng-container *ngIf="selectedFile">
+            <p class="file-name">{{ selectedFile.name }}</p>
+            <button class="change-btn" (click)="fileInput.click()">Change File</button>
+          </ng-container>
+        </div>
       </div>
+    </div>
     
-      <div *ngIf="responseMessage" class="response-message">
-        <p [innerHTML]="responseMessage"></p>
-      </div>
+    <button class="upload-btn" 
+            [disabled]="!selectedFile" 
+            (click)="uploadFile()"
+            [@pulseAnimation]="selectedFile ? 'active' : 'inactive'">
+      <span>Upload</span>
+      <div class="loading-spinner" *ngIf="uploading"></div>
+    </button>
   </div>
 </div>
-
-<style>
-/* Page background styling */
-body {
-  background: linear-gradient(135deg, #ff0000, #ff4d4d) !important;
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  min-height: 100vh; /* Ensure it spans the viewport */
-  font-family: 'Arial', sans-serif;
-}
-
-/* Main container styling */
-.main-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-/* General container styling */
-.upload-container {
-  background: linear-gradient(135deg, #6a11cb, #2575fc);
-  border-radius: 15px;
-  padding: 40px;
-  width: 60%;
-  max-width: 600px;
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
-  text-align: center;
-  color: white;
-  font-family: 'Arial', sans-serif;
-}
-
-/* Header styling */
-.upload-container h2 {
-  font-size: 2.5em;
-  margin-bottom: 10px;
-}
-
-/* Description paragraph */
-.upload-container p {
-  font-size: 1.2em;
-  margin-bottom: 30px;
-}
-
-/* Upload section */
-.upload-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-}
-
-/* File input styling */
-.upload-section input[type="file"] {
-  padding: 12px;
-  border-radius: 5px;
-  border: 2px solid white;
-  background-color: rgba(255, 255, 255, 0.2);
-  color: white;
-  cursor: pointer;
-  font-size: 1em;
-}
-
-/* File input hover effect */
-.upload-section input[type="file"]:hover {
-  background-color: rgba(255, 255, 255, 0.3);
-}
-
-/* Upload button styling */
-.upload-section button {
-  padding: 12px 25px;
-  border: none;
-  border-radius: 25px;
-  background: white;
-  color: #2575fc;
-  font-size: 1.2em;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-/* Upload button hover effect */
-.upload-section button:hover {
-  background: #2575fc;
-  color: white;
-  transform: scale(1.1);
-}
-
-/* Response message styling */
-.response-message {
-  margin-top: 20px;
-  color: #00ff00;
-  font-weight: bold;
-  font-size: 1.2em;
-  text-shadow: 0px 0px 10px rgba(0, 255, 0, 0.7);
-}
-</style>
