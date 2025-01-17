@@ -41,7 +41,6 @@ def preprocess_image(image_bytes):
 # Helper function: Process video and predict for each frame
 def process_video(video_path):
     cap = cv2.VideoCapture(video_path)
-    frame_results = []
     frame_count = 0
 
     while True:
@@ -59,14 +58,17 @@ def process_video(video_path):
 
         # Predict using the model
         prediction = model.predict(frame_array)
-        frame_results.append(prediction)
+        
+        # If any frame is detected as deepfake, return immediately
+        if prediction[0][0] > 0.2:
+            cap.release()
+            return {"is_fake": True, "confidence": float(prediction[0][0]), "total_frames": frame_count}
 
     cap.release()
 
-    # Analyze predictions
-    average_prediction = np.mean(frame_results, axis=0)
-    is_fake = average_prediction[0] > 0.2  # Adjust threshold based on model
-    return {"is_fake": is_fake, "confidence": float(average_prediction[0]), "total_frames": frame_count}
+    return {"is_fake": False, "confidence": 0.0, "total_frames": frame_count}
+
+
 
 @app.get("/")
 def read_root():
@@ -97,18 +99,16 @@ async def upload_image(file: UploadFile = File(...)):
 
 @app.post("/upload-video/")
 async def upload_video(file: UploadFile = File(...)):
-    # Save the video locally
     video_path = f"temp_{file.filename}"
     with open(video_path, "wb") as video_file:
         video_file.write(await file.read())
 
-    # Process the video
     result = process_video(video_path)
-
-    # Delete the temporary video file
-    os.remove(video_path)
+    
+    os.remove(video_path)  # Clean up the file
 
     return {"filename": file.filename, **result}
+
 
 # Add this to allow the script to run with "python main.py"
 if __name__ == "__main__":

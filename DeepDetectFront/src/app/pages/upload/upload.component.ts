@@ -55,6 +55,7 @@ export class UploadComponent {
         this.responseMessage = `File uploaded successfully: ${response.filename}`;
         
         // Add the prediction result display
+        
         const predictionResult = response.is_fake
           ? 'The image is not a deepfake.'
           : 'The image is a deepfake.';
@@ -70,8 +71,8 @@ export class UploadComponent {
 
         
         
-        this.responseMessage += `<br>${predictionResult}<br>${confidenceMessage}`;
-        //this.responseMessage += `<br>${predictionResult}`;
+        //this.responseMessage += `<br>${predictionResult}<br>${confidenceMessage}`;
+        this.responseMessage += `<br>${predictionResult}`;
       },
       error: (error) => {
         console.error('Upload error:', error);
