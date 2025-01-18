@@ -45,7 +45,7 @@
             [disabled]="!selectedFile || uploading"
             (click)="uploadFile()"
             [@pulseAnimation]="selectedFile ? 'active' : 'inactive'">
-      <span>{{ uploading ? 'Uploading...' : 'Upload' }}</span>
+      <span>{{ uploading ? 'Detecting...' : 'Upload' }}</span>
       <div class="spinner" *ngIf="uploading"></div>
     </button>
     
