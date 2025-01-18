@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+tensorflow
+numpy
+opencv-python
+pillow
+keras
+tensorflow-hub
+tensorflow-datasets
+scipy
+matplotlib
+scikit-learn
