@@ -1,13 +1,56 @@
 <div class="learn-container">
-    <h2>Learn About Deepfakes</h2>
-    <p>Ask anything related to deepfake detection, AI-generated media, and identifying deepfakes.</p>
-  
-    <input type="text" [(ngModel)]="query" placeholder="Enter your question here..." />
-    <button (click)="askDeepfake()">Ask</button>
-  
-    <div class="response-box">
-      <h3>Response:</h3>
-      <p>{{ response }}</p>
+  <!-- Left Side - Deepfake Documentation -->
+  <div class="documentation-container glass-card">
+    <div class="content">
+      <h1><span class="neon-text">Understanding Deepfake Technology</span></h1>
+      <p>
+        <i class="fas fa-brain"></i> Deepfake technology leverages artificial intelligence to manipulate videos, images, and audio, creating highly realistic but entirely fake content. 
+        It has become a growing concern in media, cybersecurity, and social ethics.
+      </p>
+
+      <h2>🔹 How Do Deepfakes Work?</h2>
+      <p>
+        Deepfake generation relies on deep learning models, primarily <strong>Generative Adversarial Networks (GANs)</strong>. 
+        These networks analyze large datasets of images and videos to learn facial patterns, expressions, and movements.
+      </p>
+
+      <h2>🔹 Common Use Cases</h2>
+      <ul>
+        <li>🎬 <strong>Movie Industry</strong>: Digital de-aging and CGI effects</li>
+        <li>📰 <strong>Fake News</strong>: Misinformation campaigns</li>
+        <li>🎭 <strong>Entertainment</strong>: AI-generated celebrity impersonations</li>
+        <li>🔐 <strong>Cybersecurity Risks</strong>: Identity theft and fraud</li>
+      </ul>
+
+      <h2>🔹 How to Detect Deepfakes?</h2>
+      <p>
+        AI models and software tools analyze frame inconsistencies, unnatural blinking, and audio mismatches to detect deepfakes. Some techniques include:
+      </p>
+      <ul>
+        <li>🔥 <strong>Deepfake detection models</strong> (like VGG16, XceptionNet)</li>
+        <li>🎭 <strong>Face movement & expression analysis</strong></li>
+        <li>🔍 <strong>Pixel-level anomaly detection</strong></li>
+      </ul>
     </div>
   </div>
-  
+
+  <!-- Right Side - AI Chatbot -->
+  <div class="chatbot-container glass-card">
+    <div class="chatbot">
+      <h3>💬 <span class="neon-text">AI Chatbot</span></h3>
+      <p>Ask anything related to deepfake detection!</p>
+
+      <div class="chatbox">
+        <div class="messages" #chatMessages (scroll)="toggleAutoScroll()">
+          <div *ngFor="let msg of messages" 
+               [ngClass]="{'user-message': msg.type === 'user', 'bot-message': msg.type === 'bot'}">
+            {{ msg.text }}
+          </div>
+        </div>
+
+        <input type="text" [(ngModel)]="query" placeholder="Enter your question..." (keyup.enter)="askDeepfake()" />
+        <button (click)="askDeepfake()">Ask</button>
+      </div>
+    </div>
+  </div>
+</div>

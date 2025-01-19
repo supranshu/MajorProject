@@ -17,7 +17,7 @@ import { LearnComponent } from './pages/learn/learn.component';
     AppComponent,
     HomeComponent,
     UploadComponent,
-    // ❌ REMOVE LearnComponent FROM HERE
+  
   ],
   imports: [
     BrowserModule,
@@ -26,7 +26,7 @@ import { LearnComponent } from './pages/learn/learn.component';
     BrowserAnimationsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    LearnComponent // ✅ IMPORT LearnComponent (Standalone component)
+    LearnComponent 
   ],
   providers: [
     provideClientHydration(), provideAnimationsAsync()
