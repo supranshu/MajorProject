@@ -7,6 +7,9 @@ import cv2
 from PIL import Image
 import io
 import os
+from pydantic import BaseModel
+import requests  
+from dotenv import load_dotenv
 
 app = FastAPI()
 from fastapi.middleware.cors import CORSMiddleware
@@ -22,6 +25,35 @@ app.add_middleware(
 # Load the pre-trained model once when the application starts
 MODEL_PATH = "./TrainedModel/best_model_new.keras"
 model = load_model(MODEL_PATH)
+
+
+load_dotenv() 
+
+GEMINI_URL = os.getenv("GEMINI_API_URL")
+GEMINI_KEY = os.getenv("GEMINI_API_KEY") 
+
+class QueryRequest(BaseModel):
+    question: str
+
+@app.post("/ask-deepfake/")
+async def ask_deepfake(request: QueryRequest):
+    question = request.question
+
+    prompt = f"Answer only questions related to deepfake images and videos and answer in 2-3 sentences only. If the query is unrelated, respond with: 'Sorry, this topic is out of our discussion .'\nUser Query: {question}"
+
+    request_data = {"contents": [{"parts": [{"text": prompt}]}]}
+
+    response = requests.post(f"{GEMINI_URL}?key={GEMINI_KEY}", json=request_data)
+
+    if response.status_code == 200:
+        data = response.json()
+        reply = data.get("candidates", [{}])[0].get("content", {}).get("parts", [{}])[0].get("text", "Error fetching response")
+        return {"response": reply}
+    else:
+        return {"error": "Failed to communicate with Gemini API", "status_code": response.status_code}
+
+
+
 
 # Helper function: Preprocess image
 def preprocess_image(image_bytes):

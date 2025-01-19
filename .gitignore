@@ -3,6 +3,8 @@ DeepDetectBackend/TainedModel/
 
 *.h5
 *.keras
+.env
+
 
 
 # Create an exception for .gitkeep files (this will keep an empty folder)

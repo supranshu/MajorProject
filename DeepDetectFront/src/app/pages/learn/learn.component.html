@@ -1,0 +1,13 @@
+<div class="learn-container">
+    <h2>Learn About Deepfakes</h2>
+    <p>Ask anything related to deepfake detection, AI-generated media, and identifying deepfakes.</p>
+  
+    <input type="text" [(ngModel)]="query" placeholder="Enter your question here..." />
+    <button (click)="askDeepfake()">Ask</button>
+  
+    <div class="response-box">
+      <h3>Response:</h3>
+      <p>{{ response }}</p>
+    </div>
+  </div>
+  

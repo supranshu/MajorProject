@@ -1,14 +1,36 @@
-<div class="hero">
-  <div class="hero-overlay"></div>
-  <div class="hero-content">
-    <h1 class="title">DeepDetect</h1>
-    <p class="subtitle">AI-Powered Deepfake Detection at Your Fingertips</p>
-    <a routerLink="/upload" class="cta-button">Get Started</a>
-  </div>
-  <div class="scroll-indicator">
-    <span></span>
-    <span></span>
-    <span></span>
+<div class="home-container">
+  <header class="navbar" [ngClass]="{'transparent': isNavbarTransparent}">
+    <div class="nav-container">
+      <div class="logo-container">
+        <a routerLink="/" class="logo-link"></a>
+      </div>
+      
+      <nav class="nav-menu" [class.active]="isMenuOpen">
+        <a routerLink="/about" class="nav-link" (click)="closeMenu()">About Us</a>
+        <a routerLink="/learn" class="nav-link" (click)="closeMenu()">Learn More</a>
+        <a routerLink="/upload" class="detect-button" (click)="closeMenu()">START DETECTING</a>
+      </nav>
+
+      <button class="menu-toggle" (click)="toggleMenu()" [class.active]="isMenuOpen">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="title">DeepDetect</h1>
+      <p class="subtitle">AI-Powered Deepfake Detection at Your Fingertips</p>
+      <a routerLink="/upload" class="cta-button">Get Started</a>
+    </div>
+    <div class="scroll-indicator">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
   </div>
 </div>
 

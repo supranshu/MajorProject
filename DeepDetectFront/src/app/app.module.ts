@@ -10,16 +10,23 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './pages/home/home.component';
 import { UploadComponent } from './pages/upload/upload.component';
 import { HttpClientModule } from '@angular/common/http';
+import { LearnComponent } from './pages/learn/learn.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    UploadComponent
+    UploadComponent,
+    // ❌ REMOVE LearnComponent FROM HERE
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule, FormsModule,  BrowserAnimationsModule, ReactiveFormsModule, HttpClientModule 
+    AppRoutingModule,
+    FormsModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    LearnComponent // ✅ IMPORT LearnComponent (Standalone component)
   ],
   providers: [
     provideClientHydration(), provideAnimationsAsync()
