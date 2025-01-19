@@ -1,0 +1,47 @@
+<div class="about-container">
+    <header class="navbar" [ngClass]="{'transparent': isNavbarTransparent}">
+        <div class="nav-container">
+            <div class="logo-container">
+                <a routerLink="/" class="logo-link"></a>
+            </div>
+            
+            <nav class="nav-menu" [class.active]="isMenuOpen">
+                <a routerLink="/learn" class="nav-link" (click)="closeMenu()">Learn More</a>
+                <a routerLink="/upload" class="detect-button" (click)="closeMenu()">START DETECTING</a>
+            </nav>
+            
+            <button class="menu-toggle" (click)="toggleMenu()" [class.active]="isMenuOpen">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="about-container">
+        <h1>Meet Our Team</h1>
+        <div class="team-cards">
+          <div class="team-card dev1">
+            <h2>Supranshu Singh</h2>
+            <p>Backend & AI Developer</p>
+            <p>Focuses on FastAPI and deepfake detection AI.</p>
+          </div>
+          <div class="team-card dev2">
+            <h2>Developer 2</h2>
+            <p>Frontend Developer</p>
+            <p>Handles UI/UX and Angular integration.</p>
+          </div>
+          <div class="team-card dev3">
+            <h2>Developer 3</h2>
+            <p>Full Stack Developer</p>
+            <p>Works on database and API connections.</p>
+          </div>
+          <div class="team-card dev4">
+            <h2>Developer 4</h2>
+            <p>Data Scientist</p>
+            <p>Ensures accurate AI training and dataset handling.</p>
+          </div>
+        </div>
+      </div>
+      
+</div>

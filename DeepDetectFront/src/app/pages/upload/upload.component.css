@@ -1,3 +1,87 @@
+
+
+/* Navbar Styles */
+.navbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 90px; /* Increased height for larger logo */
+  background: transparent; /* Remove solid background */
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.nav-container {
+  max-width: 1400px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Logo Styles */
+.logo-container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.logo-link {
+  display: block;
+  width: 300px; /* Increased width for better visibility */
+  height: 90px; /* Increased height */
+  background-image: url('../../../../public/logo8.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left center;
+  transition: transform 0.3s ease;
+  padding: 10px;
+}
+
+.logo-link:hover {
+  transform: scale(1.02); /* Reduced scale effect */
+}
+
+/* Navigation Menu */
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem; /* Increased gap between nav items */
+}
+
+.nav-link {
+  color: rgb(252, 252, 252);
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+  position: relative;
+  text-decoration: none;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: #6be6ff;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+
+
+
 .upload-container {
   position: relative;
   min-height: 100vh;

@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
@@ -160,5 +160,27 @@ export class UploadComponent {
       i++;
     }
     return `${Math.round(size * 100) / 100} ${sizes[i]}`;
+  }
+
+
+
+  isMenuOpen = false;
+  isNavbarTransparent = true;
+
+  
+
+ 
+  toggleMenu(): void {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  closeMenu(): void {
+    this.isMenuOpen = false;
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll() {
+    const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    this.isNavbarTransparent = scrollPosition < 50;
   }
 }

@@ -1,4 +1,27 @@
 <!-- upload.component.html -->
+
+
+<header class="navbar" [ngClass]="{'transparent': isNavbarTransparent}">
+  <div class="nav-container">
+    <div class="logo-container">
+      <a routerLink="/" class="logo-link"></a>
+    </div>
+    
+    <nav class="nav-menu" [class.active]="isMenuOpen">
+      <a routerLink="/about" class="nav-link" (click)="closeMenu()">About Us</a>
+      <a routerLink="/learn" class="nav-link" (click)="closeMenu()">Learn More</a>
+      
+    </nav>
+
+    <button class="menu-toggle" (click)="toggleMenu()" [class.active]="isMenuOpen">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+  </div>
+</header>
+
+
 <div class="upload-container">
   <!-- GIF Background -->
   <div class="background-gif"></div>

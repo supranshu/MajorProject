@@ -1,3 +1,21 @@
+<header class="navbar" [ngClass]="{'transparent': isNavbarTransparent}">
+  <div class="nav-container">
+    <div class="logo-container">
+      <a href="/" class="logo-link"></a>
+    </div>
+    
+    <nav class="nav-menu" [class.active]="isMenuOpen">
+      <a href="/about" class="nav-link" (click)="closeMenu()">About Us</a>
+      <a href="/upload" class="detect-button" (click)="closeMenu()">START DETECTING</a>
+    </nav>
+
+    <button class="menu-toggle" (click)="toggleMenu()" [class.active]="isMenuOpen">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+  </div>
+</header>
 <div class="learn-container">
   <!-- Left Side - Deepfake Documentation -->
   <div class="documentation-container glass-card">

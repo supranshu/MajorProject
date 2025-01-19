@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild} from '@angular/core';
+import { Component, ElementRef, ViewChild, HostListener} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common'; 
@@ -11,6 +11,23 @@ import { CommonModule } from '@angular/common';
   imports: [FormsModule, CommonModule], 
 })
 export class LearnComponent {
+
+  isMenuOpen = false;
+  isNavbarTransparent = true;
+
+  
+
+ 
+  toggleMenu(): void {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  closeMenu(): void {
+    this.isMenuOpen = false;
+  }
+
+
+
   query: string = '';
   messages: { text: string, type: 'user' | 'bot' }[] = [];
 
@@ -52,5 +69,12 @@ export class LearnComponent {
   toggleAutoScroll() {
     this.autoScrollEnabled = !this.autoScrollEnabled;
   }
+
+
+  @HostListener('window:scroll', ['$event'])
+    onWindowScroll() {
+      const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      this.isNavbarTransparent = scrollPosition < 50;
+    }
   
 }

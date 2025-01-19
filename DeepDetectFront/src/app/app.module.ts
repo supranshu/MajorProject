@@ -11,12 +11,17 @@ import { HomeComponent } from './pages/home/home.component';
 import { UploadComponent } from './pages/upload/upload.component';
 import { HttpClientModule } from '@angular/common/http';
 import { LearnComponent } from './pages/learn/learn.component';
+import { AboutComponent } from './pages/about/about.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     UploadComponent,
+    AboutComponent,
+    
+    
+    
   
   ],
   imports: [
@@ -26,7 +31,9 @@ import { LearnComponent } from './pages/learn/learn.component';
     BrowserAnimationsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    LearnComponent 
+    LearnComponent
+    
+  
   ],
   providers: [
     provideClientHydration(), provideAnimationsAsync()

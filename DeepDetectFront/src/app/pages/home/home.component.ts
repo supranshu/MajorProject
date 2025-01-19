@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-home',
@@ -6,12 +6,11 @@ import { Component, OnInit, HostListener } from '@angular/core';
   styleUrl: './home.component.css',
   standalone: false
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent  {
   isMenuOpen = false;
   isNavbarTransparent = true;
 
-  ngOnInit(): void {
-  }
+  
 
  
   toggleMenu(): void {
