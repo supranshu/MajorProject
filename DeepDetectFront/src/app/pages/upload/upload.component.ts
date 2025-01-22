@@ -113,14 +113,9 @@ export class UploadComponent {
     this.http.post(url, formData).subscribe({
       next: (response: any) => {
         let predictionResult = '';
-        
+        let conf = response.confidence;
         if (isImage) {
-          const conf = response.confidence;
-          if (conf < 0.2) {
-            response.confidence = Math.floor(Math.random() * (100 - 75 + 1)) + 75;
-          } else {
-            response.confidence = Math.floor(Math.random() * (15 - 0 + 1)) + 15;
-          }
+          
           predictionResult = response.is_fake
             ? 'The image is not a deepfake.'
             : 'The image is a deepfake.';
@@ -131,6 +126,7 @@ export class UploadComponent {
         }
 
         this.responseMessage = `File uploaded successfully: ${response.filename}<br>${predictionResult}`;
+        // <br>${conf*100}% confidence
         this.uploading = false;
         this.selectedFile = null;
       },

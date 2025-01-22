@@ -4,6 +4,7 @@ DeepDetectBackend/TainedModel/
 *.h5
 *.keras
 .env
+*.pth
 
 
 
