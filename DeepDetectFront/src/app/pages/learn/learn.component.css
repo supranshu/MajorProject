@@ -90,7 +90,7 @@ body {
   left: 50%;
   width: 0;
   height: 2px;
-  background: #6be6ff;
+  background: #ff6b6b;
   transition: all 0.3s ease;
   transform: translateX(-50%);
 }
@@ -120,179 +120,161 @@ body {
 /* === Container === */
 .learn-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 50px;
+  gap: 2rem;
   max-width: 1400px;
-  width: 90%;
-  padding: 50px;
-  transform-style: preserve-3d;
-  margin-top: 80px;
+  margin: 2rem auto;
+  padding: 1rem;
+  padding-top: 80px;
 }
 
-/* === Glassmorphic Card Base === */
 .glass-card {
   background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 30px;
-  transition: transform 0.5s ease-in-out, box-shadow 0.5s;
-  position: relative;
-  z-index: 1;
+  padding: 2rem;
+  transition: transform 0.3s ease;
 }
+
 .glass-card:hover {
-  transform: translateY(-10px) scale(1.05);
-  box-shadow: 0 20px 40px rgba(0, 255, 255, 0.3);
+  transform: translateY(-5px);
 }
 
-/* === Chatbot Section === */
-.chatbot-container {
-  flex: 1;
-  max-width: 450px;
-  position: relative;
-  transform: rotateY(-10deg);
-}
-.chatbot {
-  position: relative;
-  overflow: hidden;
-}
-.chatbot::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(0, 255, 255, 0.3), transparent);
-  animation: pulse 5s infinite linear;
-}
-
-/* === Documentation Section === */
+/* Documentation Section */
 .documentation-container {
+  flex: 3;
+}
+
+.content h1 {
+  color: #333;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+}
+
+.content h2 {
+  color: #0084ff;
+  margin: 1.5rem 0 1rem;
+  font-size: 1.5rem;
+}
+
+.content p {
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.content ul {
+  list-style: none;
+  padding-left: 1rem;
+}
+
+.content li {
+  margin: 0.75rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Chatbot Section */
+.chatbot-container {
   flex: 2;
-  transform: rotateY(10deg);
+  max-width: 450px;
 }
 
-/* === Chat Messages === */
-.chatbox {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
 .messages {
-  height: 320px;
-  overflow-y: auto; /* Enables scrolling */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start; /* Fixes messages starting at top */
-  padding: 15px;
-  background: rgba(0, 0, 0, 0.2);
+  height: 350px;
+  background: rgba(0, 0, 0, 0.05);
   border-radius: 10px;
-  transition: all 0.3s ease-in-out;
-  scrollbar-width: auto; /* Fix for Firefox */
-  scrollbar-color: #0084ff rgba(255, 255, 255, 0.1); /* Color fix */
+  padding: 1rem;
+  margin-bottom: 1rem;
+  overflow-y: auto;
 }
-
-/* Webkit (Chrome, Edge, Safari) Scrollbar Styles */
-.messages::-webkit-scrollbar {
-  width: 8px; /* Wider scrollbar */
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.messages::-webkit-scrollbar-thumb {
-  background: #0084ff;
-  border-radius: 5px;
-  transition: background 0.3s;
-}
-
-.messages::-webkit-scrollbar-thumb:hover {
-  background: #00eaff; /* Lighter glow effect */
-}
-
 
 .user-message, .bot-message {
-  max-width: 80%;
-  padding: 10px;
-  border-radius: 10px;
-  margin: 8px 0;
-  animation: slideUp 0.4s ease-in-out;
+  max-width: 85%;
+  padding: 0.75rem 1rem;
+  border-radius: 15px;
+  margin: 0.5rem 0;
+  line-height: 1.4;
 }
+
 .user-message {
-  text-align: right;
-  background: linear-gradient(135deg, #0084ff, #00eaff);
-  color: white;
   margin-left: auto;
-  box-shadow: 0 0 10px #00eaff;
+  background: #0084ff;
+  color: white;
 }
+
 .bot-message {
-  text-align: left;
-  background: linear-gradient(135deg, #444, #666);
-  color: white;
+  background: #f0f0f0;
+  color: #333;
 }
 
-/* === Inputs & Buttons === */
+.input-container {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
 input[type='text'] {
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  border: none;
-  font-size: 16px;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  outline: none;
-  transition: all 0.3s ease-in-out;
-  position: relative;
-  z-index: 2; /* Ensure input is clickable */
-}
-
-input[type='text']:focus {
-  background: rgba(255, 255, 255, 0.4);
-  color: black;
+  flex: 1;
+  padding: 0.75rem;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
 }
 
 button {
-  padding: 12px;
-  background: linear-gradient(135deg, #0084ff, #00eaff);
-  border: none;
+  padding: 0.75rem 1.5rem;
+  background: #0084ff;
   color: white;
+  border: none;
+  border-radius: 10px;
   cursor: pointer;
-  border-radius: 8px;
-  transition: 0.3s;
-  box-shadow: 0 0 10px #00eaff;
-  cursor: pointer;
-  z-index: 2;
+  transition: background 0.3s;
 }
+
 button:hover {
-  background: linear-gradient(135deg, #00eaff, #0084ff);
-  box-shadow: 0 0 20px #00eaff;
+  background: #0066cc;
 }
 
-/* === Animations === */
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-    opacity: 0.7;
-  }
-  50% {
-    transform: scale(1.2);
-    opacity: 0.3;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 0.7;
-  }
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
 }
 
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
+/* Loading Animation */
+.typing-indicator {
+  padding: 0.5rem;
+  display: flex;
+  gap: 0.25rem;
+  justify-content: flex-start;
+}
+
+.typing-dot {
+  width: 8px;
+  height: 8px;
+  background: #0084ff;
+  border-radius: 50%;
+  animation: bounce 1.4s infinite;
+}
+
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes bounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-4px); }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .learn-container {
+    flex-direction: column;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  
+  .documentation-container,
+  .chatbot-container {
+    width: 100%;
+    max-width: none;
   }
 }
