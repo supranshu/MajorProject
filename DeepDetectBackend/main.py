@@ -115,7 +115,7 @@ async def upload_image(file: UploadFile = File(...)):
 
     # Predict using the model
     prediction = model.predict(processed_image)
-    is_fake = prediction[0][0] > 0.2 # Adjust threshold based on model
+    is_fake = prediction[0][0] > 0.1 
 
     print(f"Prediction output: {prediction}")
 
