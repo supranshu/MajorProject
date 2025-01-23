@@ -167,3 +167,17 @@ h1 {
 .dev4 {
     background-image: url("../../../../public/profilepic.jpg");
 }
+
+
+/* Footer */
+.footer {
+  background-color: #333;
+  color: white;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.footer p {
+  margin: 0;
+  font-size: 1rem;
+}

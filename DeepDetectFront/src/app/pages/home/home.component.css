@@ -302,37 +302,67 @@ body, html {
 .features-section {
   padding: 80px 20px;
   text-align: center;
-  background-color: white;
+  background: linear-gradient(135deg, #f1ebf7, #e4ebf8);
+  background-size: cover;
+  background-position: center;
+  color: #fff;
 }
 
 .features-section h2 {
-  font-size: 2.5rem;
-  color: #333;
-  margin-bottom: 40px;
-  animation: fadeInUp 1s ease-in-out;
+  font-size: 2.8rem;
+  margin-bottom: 50px;
+  color: #315dee;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  position: relative;
+  display: inline-block;
+}
+
+.features-section h2:after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: #ff6b6b;
+  border-radius: 2px;
 }
 
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 30px;
-  padding: 0 50px;
+  padding: 0 20px;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-/* Feature Card */
 .feature-card {
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 400px;
   position: relative;
+  border-radius: 20px;
   overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Adding Image as Background */
-.feature-card::before {
-  content: "";
+.feature-card:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+  z-index: 1;
+}
+
+.feature-image {
   position: absolute;
   top: 0;
   left: 0;
@@ -340,37 +370,93 @@ body, html {
   height: 100%;
   background-size: cover;
   background-position: center;
-  opacity: 0.3;
-  transition: opacity 0.3s ease-in-out;
+  transition: transform 0.3s ease;
 }
 
-.feature-card:nth-child(1)::before {
-  background-image: url('../../../../public/ai2.jpg');
+.feature-card:nth-child(1) .feature-image {
+  background-image: url('../../../../public/f1.2.webp');
 }
 
-.feature-card:nth-child(2)::before {
-  background-image: url('../../../../public/ai2.jpg');
+.feature-card:nth-child(2) .feature-image {
+  background-image: url('../../../../public/f2.webp');
 }
 
-.feature-card:nth-child(3)::before {
-  background-image: url('../../../../public/ai2.jpg');
+.feature-card:nth-child(3) .feature-image {
+  background-image: url('../../../../public/f3.webp');
 }
 
-.feature-card h3, .feature-card p {
-  position: relative;
+.feature-card:nth-child(4) .feature-image {
+  background-image: url('../../../../public/f4.jpeg');
+}
+
+.feature-card:nth-child(5) .feature-image {
+  background-image: url('../../../../public/f5.jpeg');
+}
+
+.feature-card:nth-child(6) .feature-image {
+  background-image: url('../../../../public/f6.webp');
+}
+
+.feature-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 30px;
   z-index: 2;
+  text-align: left;
+  color: #fff;
 }
 
-.feature-card:hover::before {
-  opacity: 0.6;
+.feature-card h3 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: #fff;
+  font-weight: 600;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* Hover Effect */
+.feature-card p {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
 .feature-card:hover {
   transform: translateY(-10px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
 }
 
+.feature-card:hover .feature-image {
+  transform: scale(1.1);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .feature-card {
+    height: 350px;
+  }
+}
+
+@media (max-width: 768px) {
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .features-section h2 {
+    font-size: 2.2rem;
+  }
+  
+  .feature-card {
+    height: 300px;
+  }
+}
 /* Footer */
 .footer {
   background-color: #333;
